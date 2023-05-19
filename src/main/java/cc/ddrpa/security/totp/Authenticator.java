@@ -12,7 +12,7 @@ import java.security.SecureRandom;
 public class Authenticator {
     // 默认时间步长为 30 秒
     // 在 30 秒区间内的计算的验证码是相同的
-    private static final Long DEFAULT_TIME_STEP_IN_SECONDS = 30L;
+    public static final Long DEFAULT_TIME_STEP_IN_SECONDS = 30L;
     // 生成 6 位 OTP
     private static final Long VERIFICATION_CODE_MODULUS = 1000L * 1000L;
 
@@ -87,11 +87,10 @@ public class Authenticator {
         long time = getTime(timeStep);
         if (rawCalculate(key, Longs.toByteArray(time)) == code) {
             return true;
-        }
-        if (windowSize == 0) {
+        } else if (windowSize == 0) {
             return false;
         }
-        for (int i = 1; i <= windowSize; i++) {
+        for (long i = 1; i <= windowSize; i++) {
             if (rawCalculate(key, Longs.toByteArray(time - i)) == code) {
                 return true;
             }

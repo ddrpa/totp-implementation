@@ -6,13 +6,13 @@
 
     <groupId>cc.ddrpa.security</groupId>
     <artifactId>totp</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.0</version>
     <packaging>jar</packaging>
 
     <name>${project.groupId}:${project.artifactId}</name>
     <description>Time-based One-Time Password (TOTP) algorithm implementation in Java.
     </description>
-    <!--    <url>https://github.com/ddrpa/Chaparral</url>-->
+    <url>https://github.com/ddrpa/totp-implementation</url>
     <licenses>
         <license>
             <name>MIT License</name>
@@ -27,12 +27,12 @@
             <organizationUrl>https://yufanonsoftware.me</organizationUrl>
         </developer>
     </developers>
-    <!--    <scm>-->
-    <!--        <connection>scm:git:git://github.com/ddrpa/Chaparral.git</connection>-->
-    <!--        <developerConnection>scm:git:ssh://github.com:ddrpa/Chaparral.git-->
-    <!--        </developerConnection>-->
-    <!--        <url>http://github.com/ddrpa/Chaparral/tree/master</url>-->
-    <!--    </scm>-->
+    <scm>
+        <connection>scm:git:git://github.com/ddrpa/totp-implementation.git</connection>
+        <developerConnection>scm:git:ssh://github.com:ddrpa/totp-implementation.git
+        </developerConnection>
+        <url>http://github.com/ddrpa/totp-implementation/tree/master</url>
+    </scm>
     <distributionManagement>
         <snapshotRepository>
             <id>ossrh</id>
