@@ -113,7 +113,14 @@ public class Authenticator {
         return String.format("otpauth://totp/%s:%s?secret=%s", organization, account, secret);
     }
 
-    private static int rawCalculate(byte[] key, byte[] payload) throws NoSuchAlgorithmException, InvalidKeyException {
+    /**
+     * @param key
+     * @param payload
+     * @return
+     * @throws NoSuchAlgorithmException
+     * @throws InvalidKeyException
+     */
+    public static int rawCalculate(byte[] key, byte[] payload) throws NoSuchAlgorithmException, InvalidKeyException {
         Mac hmac = Mac.getInstance("HmacSHA1");
         hmac.init(new SecretKeySpec(key, "HmacSHA1"));
         byte[] hash = hmac.doFinal(payload);
