@@ -1,6 +1,6 @@
 # Time-based One-Time Password (TOTP) algorithm implementation in Java
 
-基于时间的一次性密码算法（TOTP）Java 实现。
+基于时间的一次性密码算法（TOTP）Java 实现，同时支持解析 Google Authenticator 导出的二维码。
 
 ## 添加依赖
 
@@ -55,3 +55,7 @@ assertTrue(Authenticator.verifyCode(secret, CODE_FROM_AUTHENTICATOR, Authenticat
 ```
 
 时间偏差在一个时间段内的验证码也可被接受。
+
+## 解析 Google Authenticator 导出的二维码
+
+`cc.ddrpa.security.totp.migrate.GoogleAuthenticatorMigrator` 类提供了解析 Google Authenticator 导出二维码的方法。

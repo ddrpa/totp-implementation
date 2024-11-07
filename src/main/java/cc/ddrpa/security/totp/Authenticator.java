@@ -2,14 +2,14 @@ package cc.ddrpa.security.totp;
 
 import com.google.common.io.BaseEncoding;
 import com.google.common.primitives.Longs;
-
-import javax.crypto.Mac;
-import javax.crypto.spec.SecretKeySpec;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
 
 public class Authenticator {
+
     // 默认时间步长为 30 秒
     // 在 30 秒区间内的计算的验证码是相同的
     public static final Long DEFAULT_TIME_STEP_IN_SECONDS = 30L;
@@ -17,6 +17,10 @@ public class Authenticator {
     private static final Long VERIFICATION_CODE_MODULUS = 1000L * 1000L;
 
     private static final SecureRandom random = new SecureRandom();
+
+    private Authenticator() {
+        throw new IllegalStateException("Utility class");
+    }
 
     /**
      * 生成 16 个字符长度的 Base32 编码密钥，可用于生成二维码或手动录入两步验证器
@@ -37,7 +41,8 @@ public class Authenticator {
      * @throws NoSuchAlgorithmException
      * @throws InvalidKeyException
      */
-    public static int calculateCode(String secret) throws NoSuchAlgorithmException, InvalidKeyException {
+    public static int calculateCode(String secret)
+        throws NoSuchAlgorithmException, InvalidKeyException {
         byte[] key = BaseEncoding.base32().decode(secret);
         return rawCalculate(key, Longs.toByteArray(getTime(DEFAULT_TIME_STEP_IN_SECONDS)));
     }
@@ -51,7 +56,8 @@ public class Authenticator {
      * @throws NoSuchAlgorithmException
      * @throws InvalidKeyException
      */
-    public static int calculateCode(String secret, long timeStep) throws NoSuchAlgorithmException, InvalidKeyException {
+    public static int calculateCode(String secret, long timeStep)
+        throws NoSuchAlgorithmException, InvalidKeyException {
         byte[] key = BaseEncoding.base32().decode(secret);
         return rawCalculate(key, Longs.toByteArray(getTime(timeStep)));
     }
@@ -65,7 +71,8 @@ public class Authenticator {
      * @throws NoSuchAlgorithmException
      * @throws InvalidKeyException
      */
-    public static boolean verifyCode(String secret, int code) throws NoSuchAlgorithmException, InvalidKeyException {
+    public static boolean verifyCode(String secret, int code)
+        throws NoSuchAlgorithmException, InvalidKeyException {
         byte[] key = BaseEncoding.base32().decode(secret);
         return rawCalculate(key, Longs.toByteArray(getTime(DEFAULT_TIME_STEP_IN_SECONDS))) == code;
     }
@@ -76,13 +83,14 @@ public class Authenticator {
      * @param secret     Base32 编码的密钥
      * @param code       待验证的 OTP
      * @param timeStep   自定义时间步长，单位为秒
-     * @param windowSize 考虑到用户可能会出现时间不同步的情况，可以设置一个前后偏移窗口，比如设置为 3，那么会计算当前时间段前后 3 个时间段的验证码
-     *                   0 表示只计算当前时间段的验证码
+     * @param windowSize 考虑到用户可能会出现时间不同步的情况，可以设置一个前后偏移窗口，比如设置为 3，那么会计算当前时间段前后 3 个时间段的验证码 0
+     *                   表示只计算当前时间段的验证码
      * @return
      * @throws NoSuchAlgorithmException
      * @throws InvalidKeyException
      */
-    public static boolean verifyCode(String secret, int code, long timeStep, long windowSize) throws NoSuchAlgorithmException, InvalidKeyException {
+    public static boolean verifyCode(String secret, int code, long timeStep, long windowSize)
+        throws NoSuchAlgorithmException, InvalidKeyException {
         byte[] key = BaseEncoding.base32().decode(secret);
         long time = getTime(timeStep);
         if (rawCalculate(key, Longs.toByteArray(time)) == code) {
@@ -114,13 +122,24 @@ public class Authenticator {
     }
 
     /**
+     * 拼接一个可供 Google Authenticator 识别的二维码字符串
+     *
+     * @param otpAuth
+     * @return
+     */
+    public static String generateQRCode(OTPAuth otpAuth) {
+        return generateQRCode(otpAuth.secret(), otpAuth.organization(), otpAuth.account());
+    }
+
+    /**
      * @param key
      * @param payload
      * @return
      * @throws NoSuchAlgorithmException
      * @throws InvalidKeyException
      */
-    public static int rawCalculate(byte[] key, byte[] payload) throws NoSuchAlgorithmException, InvalidKeyException {
+    public static int rawCalculate(byte[] key, byte[] payload)
+        throws NoSuchAlgorithmException, InvalidKeyException {
         Mac hmac = Mac.getInstance("HmacSHA1");
         hmac.init(new SecretKeySpec(key, "HmacSHA1"));
         byte[] hash = hmac.doFinal(payload);
@@ -150,9 +169,5 @@ public class Authenticator {
 
     private static long getTime(long timeStep) {
         return (System.currentTimeMillis() / 1000L) / timeStep;
-    }
-
-    private Authenticator() {
-        throw new IllegalStateException("Utility class");
     }
 }
