@@ -18,6 +18,7 @@ class GoogleAuthenticatorMigrationDecoderTests {
     @Test
     void migrateTest() throws InvalidQRCodeException, UnsupportedEncodingException {
         OTPAuth auth = GoogleAuthenticatorMigrationDecoder.migrate(DECODED_QR_CODE);
+        logger.info("Auth: {}", auth);
         assertEquals("G42GCMBXMU4WENJQ", auth.secret());
         String newQRCode = Authenticator.generateQRCode(auth);
         logger.info("New QR Code: {}", newQRCode);

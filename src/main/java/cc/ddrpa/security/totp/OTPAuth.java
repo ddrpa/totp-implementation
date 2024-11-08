@@ -23,4 +23,13 @@ public class OTPAuth {
     public String account() {
         return account;
     }
+
+    @Override
+    public String toString() {
+        return "OTPAuth{" +
+            "secret='" + secret + '\'' +
+            ", organization='" + organization + '\'' +
+            ", account='" + account + '\'' +
+            '}';
+    }
 }

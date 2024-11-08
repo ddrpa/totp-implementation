@@ -6,7 +6,7 @@
 
     <groupId>cc.ddrpa.security</groupId>
     <artifactId>totp</artifactId>
-    <version>1.1.0</version>
+    <version>1.2.0</version>
     <packaging>jar</packaging>
 
     <name>${project.groupId}:${project.artifactId}</name>
@@ -63,10 +63,22 @@
             <version>32.0.0-jre</version>
             <scope>provided</scope>
         </dependency>
+        <!-- 用于解析 Google Authenticator 导出的二维码 -->
         <dependency>
             <groupId>com.google.protobuf</groupId>
             <artifactId>protobuf-java</artifactId>
             <version>4.28.3</version>
+        </dependency>
+        <!-- 用于生成二维码 -->
+        <dependency>
+            <groupId>com.google.zxing</groupId>
+            <artifactId>core</artifactId>
+            <version>3.5.3</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.zxing</groupId>
+            <artifactId>javase</artifactId>
+            <version>3.5.3</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -132,4 +144,11 @@
             </plugin>
         </plugins>
     </build>
+    <repositories>
+        <repository>
+            <id>maven_central</id>
+            <name>Maven Central</name>
+            <url>https://repo.maven.apache.org/maven2/</url>
+        </repository>
+    </repositories>
 </project>
